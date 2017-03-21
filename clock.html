@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>时钟</title>
+    <style>
+        .clock{
+            width:200px;height: 200px;
+            border:5px solid #aaa;
+            background:radial-gradient(#fff,#ccc);
+            box-shadow: 0 0 5px #000;
+            margin:auto;
+            position: fixed;
+            left:0;
+            top:0; right:0;bottom:0;
+            border-radius: 50%;text-align: center;line-height:100px;
+        }
+        .circle{
+            width: 10px;height:10px;background-color: red;
+            border-radius: 50%;
+            position: absolute;
+            left:0;
+            top:0;right:0;bottom:0;margin:auto;z-index: 99;
+        }
+    </style>
+</head>
+<script>
+
+    window.onload=function(){
+        var clock=document.querySelector(".clock");
+        createMark();
+      //  获得三针
+        var h=createPointer(5,40,"#000",10);
+        var m=createPointer(3,55,"green",40);
+        var s=createPointer(2,70,"red",80);
+      //获得时间
+        var date=new Date();
+        var hours=date.getHours();
+        var min=date.getMinutes();
+        var secs=date.getSeconds();
+        h.style.transform="rotate("+(hours*30+Math.round(min*6/12))+"deg)";
+        m.style.transform="rotate("+min*6+"deg)";
+        s.style.transform="rotate("+secs*6+"deg)";
+
+        var t=setInterval(function(){
+       //    获得当前时间
+            var date=new Date();
+            var hours=date.getHours();
+            var min=date.getMinutes();
+            var secs=date.getSeconds();
+        //   三针分别该旋转的角度
+            h.style.transform="rotate("+(hours*30+Math.round(min*6/12))+"deg)";
+            m.style.transform="rotate("+min*6+"deg)";
+            s.style.transform="rotate("+secs*6+"deg)";
+        },1000);
+
+       //  表盘
+        function createMark() {
+            var width,height;
+            for(var i=0;i<60;i++){
+                if(i%5==0){
+                    width=6;
+                    height=10;
+                }else{
+                    width=2;
+                    height=6;
+                }
+                var div=document.createElement("div");
+                div.style.cssText="width:"+width+"px;height:"+height+"px;background:#000;position:absolute;left:"+(200-width)/2+"px;top:0";
+                div.style.transform="rotate("+i*6+"deg)";
+                div.style.transformOrigin="center 100px";
+                clock.appendChild(div);
+            }
+        }
+      //表针
+        function createPointer(w,h,c,a){
+            var div=document.createElement("div");
+            var lefts=(200-w)/2;
+            var tops=200/2-h;
+            div.style.cssText="width:"+w+"px;height:"+h+"px;background:"+c+";position:absolute;left:"+lefts+"px;top:"+tops+"px;"
+            div.style.transformOrigin="center bottom";
+            clock.appendChild(div);
+            return div;
+        }
+
+
+    }
+
+
+
+
+</script>
+
+
+
+
+
+
+
+
+<body>
+<div class="clock">
+    北京时间
+    <div class="circle"></div>
+</div>
+
+
+</body>
+</html>
